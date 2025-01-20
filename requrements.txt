@@ -1,0 +1,6 @@
+// Localhost dependencies
+
+fastapi
+uvicorn
+sqlmodel
+aiosqlite
