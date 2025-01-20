@@ -1,30 +1,24 @@
-# Serverless_InventoryControl_FYP
-For my final year project, to build a serverless inventory control system in Azure.
+# serverless_inventorycontrol_fyp
 
-System implementation phase:
-Phase 1: Core System
-1.1 Basic Inventory Management (CRUD)
-1.1.1 Add Items
-1.1.1.1 Add Item Groups (SKU)
-- Table Column for SKU: GID, Item Name, Category, Subcategory, Color, Size, Quantity, Unit Price, Supplier Name, Shelf Location, Date Added
-- Quantity will be 0, it will be automatically increased based on the items that are using it's SKU
-- Date added will be based on the date that the item group has been created
-- SKU naming scheme will be based on First 2 Letters of Each Word + First 2 Letters of Category + First 1 Letters of Color + First 1 Letters of Size + Date
+## Project setup
+```
+npm install
+```
 
-1.1.1.2 Add Individual Items (Serial Number)
-- Table Column for S/N: SID, S/N, SKU, Item Name, Date Added, Manufacturing Date, Batch Number, Stock Placement
-- Date added will be based on the date that the item has been created
-- Item Name will be automatically fetched from the SKU
-- S/N name scheme will be SKU+ID
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-1.1.1.3 Add Stock Movement
-- Table Column: MID, RID (SKU or S/N), MovementType, Quantity (Only SKU), SourceLocation, DestLocation, RequestBy, RequestDate, ApprovalStatus, ApprovedBy, ApproveDate, RejectReason, ExecutedBy, ExecutedDate, MovementStatus, Notes
+### Compiles and minifies for production
+```
+npm run build
+```
 
-1.1.1.4 Add Stock Movement Logging (Automated)
-- Table Column: LID, MID (From Stock Movement), Action, PerformedBy, Date, Notes
+### Lints and fixes files
+```
+npm run lint
+```
 
-1.1.2 Remove Items
-1.1.3 Update Items
-1.1.4 Read Items
-
-1.2 Real-time Stock Tracking Notification
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
