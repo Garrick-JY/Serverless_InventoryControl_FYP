@@ -14,7 +14,8 @@ Item Name will be automatically fetched from the SKU
 S/N name scheme will be SKU+ID
 1.1.1.3 Add Stock Movement
 
-Table Column: MID, RID (SKU or S/N), MovementType, Quantity (Only SKU), SourceLocation, DestLocation, RequestBy, RequestDate, ApprovalStatus, ApprovedBy, ApproveDate, RejectReason, ExecutedBy, ExecutedDate, MovementStatus, Notes
+Table Column: MID, RID (SKU or S/N), MovementType, Quantity (Only SKU), 
+SourceLocation, DestLocation, RequestBy, RequestDate, ApprovalStatus, ApprovedBy, ApproveDate, RejectReason, ExecutedBy, ExecutedDate, MovementStatus, Notes
 1.1.1.4 Add Stock Movement Logging (Automated)
 
 Table Column: LID, MID (From Stock Movement), Action, PerformedBy, Date, Notes
