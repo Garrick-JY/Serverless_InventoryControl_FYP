@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Enum
+from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from backend.app.db import Base
@@ -6,16 +6,16 @@ from backend.app.db import Base
 # SKU Table
 class SKU(Base):
     __tablename__ = "sku"
-    sku = Column(String, primary_key=True, unique=True, index=True)
-    item_name = Column(String, nullable=False)
-    category = Column(String, nullable=False)
-    subcategory = Column(String, nullable=True)
-    color = Column(String, nullable=False)
-    size = Column(String, nullable=False)
+    sku = Column(String(50), primary_key=True, unique=True, index=True)  # Specify length
+    item_name = Column(String(255), nullable=False)  # Specify length
+    category = Column(String(100), nullable=False)  # Specify length
+    subcategory = Column(String(100), nullable=True)  # Specify length
+    color = Column(String(50), nullable=False)  # Specify length
+    size = Column(String(50), nullable=False)  # Specify length
     quantity = Column(Integer, default=0)
     unit_price = Column(Float, nullable=False)
-    supplier_name = Column(String, nullable=True)
-    shelf_location = Column(String, nullable=True)
+    supplier_name = Column(String(255), nullable=True)  # Specify length
+    shelf_location = Column(String(100), nullable=True)  # Specify length
     date_added = Column(DateTime, default=datetime.utcnow)
 
     serial_numbers = relationship("SerialNumber", back_populates="sku_details")
@@ -24,13 +24,13 @@ class SKU(Base):
 # SerialNumber Table
 class SerialNumber(Base):
     __tablename__ = "serial_number"
-    serial_number = Column(String, primary_key=True, unique=True, index=True)
-    sku = Column(String, ForeignKey("sku.sku"), nullable=False)
-    item_name = Column(String, nullable=False)  # Automatically fetched from SKU
+    serial_number = Column(String(50), primary_key=True, unique=True, index=True)  # Specify length
+    sku = Column(String(50), ForeignKey("sku.sku"), nullable=False)  # Match length of SKU.sku
+    item_name = Column(String(255), nullable=False)  # Specify length
     date_added = Column(DateTime, default=datetime.utcnow)
     manufacturing_date = Column(DateTime, nullable=False)
-    batch_number = Column(String, nullable=True)
-    stock_placement = Column(String, nullable=True)
+    batch_number = Column(String(50), nullable=True)  # Specify length
+    stock_placement = Column(String(100), nullable=True)  # Specify length
 
     sku_details = relationship("SKU", back_populates="serial_numbers")
     stock_movements = relationship("StockMovement", back_populates="serial_number_details")
@@ -38,22 +38,23 @@ class SerialNumber(Base):
 # StockMovement Table
 class StockMovement(Base):
     __tablename__ = "stock_movement"
-    mid = Column(String, primary_key=True, unique=True, index=True)  # Unique movement ID
-    rid = Column(String, nullable=False)  # Can reference SKU or Serial Number
-    movement_type = Column(String, nullable=False)  # Add, Remove, Transfer
-    quantity = Column(Integer, nullable=True)  # Relevant for SKU-based movements
-    source_location = Column(String, nullable=True)
-    dest_location = Column(String, nullable=True)
-    request_by = Column(String, nullable=False)
+    mid = Column(String(50), primary_key=True, unique=True, index=True)  # Specify length
+    sku = Column(String(50), ForeignKey("sku.sku"), nullable=True)  # Match length of SKU.sku
+    serial_number = Column(String(50), ForeignKey("serial_number.serial_number"), nullable=True)  # Match length
+    movement_type = Column(String(50), nullable=False)  # Specify length
+    quantity = Column(Integer, nullable=True)
+    source_location = Column(String(100), nullable=True)  # Specify length
+    dest_location = Column(String(100), nullable=True)  # Specify length
+    request_by = Column(String(255), nullable=False)  # Specify length
     request_date = Column(DateTime, default=datetime.utcnow)
-    approval_status = Column(String, nullable=True)  # Pending, Approved, Rejected
-    approved_by = Column(String, nullable=True)
+    approval_status = Column(String(50), nullable=True)  # Specify length
+    approved_by = Column(String(255), nullable=True)  # Specify length
     approve_date = Column(DateTime, nullable=True)
-    reject_reason = Column(String, nullable=True)
-    executed_by = Column(String, nullable=True)
+    reject_reason = Column(String(255), nullable=True)  # Specify length
+    executed_by = Column(String(255), nullable=True)  # Specify length
     executed_date = Column(DateTime, nullable=True)
-    movement_status = Column(String, nullable=False)  # Pending, Completed
-    notes = Column(String, nullable=True)
+    movement_status = Column(String(50), nullable=False)  # Specify length
+    notes = Column(String(500), nullable=True)  # Specify length
 
     sku_details = relationship("SKU", back_populates="stock_movements")
     serial_number_details = relationship("SerialNumber", back_populates="stock_movements")
@@ -62,11 +63,11 @@ class StockMovement(Base):
 # StockMovementLog Table
 class StockMovementLog(Base):
     __tablename__ = "stock_movement_log"
-    lid = Column(String, primary_key=True, unique=True, index=True)  # Unique log entry ID
-    mid = Column(String, ForeignKey("stock_movement.mid"), nullable=False)
-    action = Column(String, nullable=False)  # Initiated, Approved, Rejected
-    performed_by = Column(String, nullable=False)
+    lid = Column(String(50), primary_key=True, unique=True, index=True)  # Specify length
+    mid = Column(String(50), ForeignKey("stock_movement.mid"), nullable=False)  # Match length
+    action = Column(String(50), nullable=False)  # Specify length
+    performed_by = Column(String(255), nullable=False)  # Specify length
     date = Column(DateTime, default=datetime.utcnow)
-    notes = Column(String, nullable=True)
+    notes = Column(String(500), nullable=True)  # Specify length
 
     movement_details = relationship("StockMovement", back_populates="movement_logs")
